@@ -16,8 +16,6 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
                        postgresql-client \
                        libpq-dev libreadline-dev \
                        mysql-client libmysqlclient-dev \
-                       sudo cron \
-                       psmisc rsyslog \
                        openjdk-7-jre-headless &&\
     dpkg-divert --local --rename --add /sbin/initctl &&\
     sh -c "test -f /sbin/initctl || ln -s /bin/true /sbin/initctl"
