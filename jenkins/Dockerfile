@@ -68,6 +68,9 @@ RUN xargs -L 1 rbenv install < /root/versions.txt
 # Install Bundler for each version of ruby
 RUN bash -l -c 'for v in $(cat /root/versions.txt); do rbenv shell $v; gem update --system; gem install bundler; done'
 
+# Get more application specific here
+RUN apt-get install -y pdftk
+
 # Convert jenkins home into a persistent volume
 VOLUME /var/jenkins_home
 
