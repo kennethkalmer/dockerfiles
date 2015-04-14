@@ -38,9 +38,13 @@ RUN wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x
 # Place for rbenv
 ENV RBENV_ROOT /usr/local/rbenv
 
+# ruby-build version
+ENV RUBY_BUILD_VERSION v20150319zf
+
 # Get rbenv installed
 RUN git clone https://github.com/sstephenson/rbenv.git $RBENV_ROOT &&\
     git clone https://github.com/sstephenson/ruby-build.git $RBENV_ROOT/plugins/ruby-build &&\
+    cd $RBENV_ROOT/plugins/ruby-build && git checkout $RUBY_BUILD_VERSION &&\
     echo 'eval "$(rbenv init -)"' >> /etc/profile.d/rbenv.sh &&\
     echo 'gem: --no-document' >> /etc/gemrc
 
