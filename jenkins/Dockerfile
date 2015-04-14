@@ -25,8 +25,8 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 
 # Node installation
-RUN sh -c "curl -sL https://deb.nodesource.com/setup | bash -" &&\
-    apt-get install -y nodejs
+RUN sh -c "curl -sL https://deb.nodesource.com/setup_0.12 | bash -" \
+    && apt-get install -y nodejs
 
 # PhantomJS installation
 RUN wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2 &&\
