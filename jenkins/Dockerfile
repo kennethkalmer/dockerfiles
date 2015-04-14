@@ -24,20 +24,6 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
 # Define commonly used JAVA_HOME variable
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 
-# Jenkins installation
-ENV JENKINS_VERSION 1.580.1
-# define url prefix for running jenkins behind Apache (https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache)
-ENV JENKINS_PREFIX /
-RUN mkdir /usr/share/jenkins/
-RUN useradd -d /home/jenkins -m -s /bin/bash jenkins
-
-COPY init.groovy /tmp/WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy
-RUN curl -L http://mirrors.jenkins-ci.org/war-stable/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war \
-  && cd /tmp && zip -g /usr/share/jenkins/jenkins.war WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy && rm -rf /tmp/WEB-INF
-
-ENV JENKINS_HOME /var/jenkins_home
-RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
-
 # Node installation
 RUN sh -c "curl -sL https://deb.nodesource.com/setup | bash -" &&\
     apt-get install -y nodejs
@@ -68,6 +54,20 @@ RUN xargs -L 1 rbenv install < /root/versions.txt
 
 # Install Bundler for each version of ruby
 RUN bash -l -c 'for v in $(cat /root/versions.txt); do rbenv shell $v; gem update --system; gem install bundler; done'
+
+# Jenkins installation
+ENV JENKINS_VERSION 1.580.2
+# define url prefix for running jenkins behind Apache (https://wiki.jenkins-ci.org/display/JENKINS/Running+Jenkins+behind+Apache)
+ENV JENKINS_PREFIX /
+RUN mkdir /usr/share/jenkins/
+RUN useradd -d /home/jenkins -m -s /bin/bash jenkins
+
+COPY init.groovy /tmp/WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy
+RUN curl -L http://mirrors.jenkins-ci.org/war-stable/$JENKINS_VERSION/jenkins.war -o /usr/share/jenkins/jenkins.war \
+  && cd /tmp && zip -g /usr/share/jenkins/jenkins.war WEB-INF/init.groovy.d/tcp-slave-angent-port.groovy && rm -rf /tmp/WEB-INF
+
+ENV JENKINS_HOME /var/jenkins_home
+RUN usermod -m -d "$JENKINS_HOME" jenkins && chown -R jenkins "$JENKINS_HOME"
 
 # Get more application specific here
 RUN apt-get install -y pdftk
