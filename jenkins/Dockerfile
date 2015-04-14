@@ -8,12 +8,13 @@ RUN echo "debconf debconf/frontend select Teletype" | debconf-set-selections &&\
     apt-get -y update &&\
     apt-mark hold initscripts &&\
     apt-get -y upgrade &&\
-    apt-get -y install build-essential git curl wget zip \
+    apt-get -y install build-essential git curl wget zip socat \
                        libxslt-dev libcurl4-openssl-dev \
                        libssl-dev libyaml-dev libtool \
                        libxml2-dev gawk \
                        imagemagick \
                        postgresql-client \
+                       libsqlite3-dev sqlite3 libffi-dev \
                        libpq-dev libreadline-dev \
                        mysql-client libmysqlclient-dev \
                        openjdk-7-jre-headless &&\
